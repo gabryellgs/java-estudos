@@ -6,7 +6,7 @@ public class ContaBancaria {
     static double saldo;
     static double limiteChequeEspecial;
     static double chequeUsado = 0;
-
+    static double taxaCheque = 0.20;
     
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -97,13 +97,37 @@ public class ContaBancaria {
     }
     // case 3 - depositar o dinheiro na conta
     static void depositar(double valor) {
-        if(valor > 0){
-            saldo += valor;
-            System.out.println("Deposito realizado!");
-            System.out.printf("Saldo atual: R$ %.2f%n", saldo);
-        } else{
-            System.out.println("valor invalido!");
+        if(valor <= 0){
+            System.out.println("Valor inválido!");
+            return;
         }
+        if (chequeUsado == 0) {
+            saldo += valor;
+            System.out.printf("Deposito realizado! saldo atual: R$ %.2f%n", saldo);
+            return;
+        }
+        double taxa = chequeUsado * taxaCheque;
+        
+        System.out.printf("Taxa do cheque especial: R$ %.2f%n", taxa);
+
+        if (valor >= taxa) {
+            valor -= taxa;         
+        } else{
+            System.out.println("Deposito insuficiente pra pagar a taxa!");
+            return;
+        }
+
+        if (valor >= chequeUsado) {
+            valor -= chequeUsado;
+            chequeUsado = 0;
+            saldo = valor;
+        } else{
+            chequeUsado -= valor;
+            saldo = -chequeUsado;
+            valor = 0;
+        }
+        System.out.printf("Depósito processado. Saldo atual: R$ %.2f%n", saldo);
+
     }
     // case 4 - sacar o dinheiro da conta
     static void sacar(double retirar){
@@ -118,7 +142,7 @@ public class ContaBancaria {
             }
             saldo -= retirar;
             if (saldo < 0) {
-                chequeUsado = Math.abs(saldo);
+                chequeUsado = Math.max(chequeUsado, Math.abs(saldo));
             } else{
                 chequeUsado = 0;
             }
@@ -137,7 +161,7 @@ public class ContaBancaria {
         }
         saldo -= valor;
         if (saldo < 0) {
-            chequeUsado = Math.abs(saldo);
+            chequeUsado = Math.max(chequeUsado, Math.abs(saldo));
         } else{
             chequeUsado = 0;
         }
@@ -146,8 +170,13 @@ public class ContaBancaria {
     }
     // case 6 - verificar o saldo do cheque especial
     static void verificarCheque(){
-        System.out.println("Saldo do cheque especial: " + limiteChequeEspecial);
+        if (chequeUsado > 0) {
+            System.out.printf("Conta está usando cheque especial: R$ %.2f%n", chequeUsado);
+        } else {
+            System.out.println("Conta NÃO está usando cheque especial.");
+        }
     }
+            
     // case 0 - sair do programa
     static void sair(Scanner scanner){
         System.out.println("Encenrrando o programa...");
