@@ -7,19 +7,24 @@ public class ParOuImpar {
         int primeiroNumero = scanner.nextInt();
         System.out.println("Digite um numero maior: ");
         int segundoNumero = scanner.nextInt();
-        System.out.println("Digite 1 para ver par ou 2 para ver impar");
-        int escolha = scanner.nextInt();
+
+        scanner.nextLine();
+
+        System.out.println("Digite 'par' ou 'impar': ");
+        String escolha = scanner.nextLine().toLowerCase();
+
+        if (!escolha.equals("par") && !escolha.equals("impar")) {
+            System.out.println("Opção invalida! digite apenas 'par' ou 'impar' ");
+            return;
+        }
         for(int i = primeiroNumero; i <= segundoNumero; i++){
-            if (escolha == 1 ) {
-                if (i % 2 == 0) {
-                    System.out.println(i);
-                }
+            if (!escolha.equals("par") && i % 2 == 0) {
+                System.out.println(i);
             }
-            else if (escolha == 2) {
-                if (i % 2 != 0) {
-                    System.out.println(i);
-                }
+            if (!escolha.equals("impar") && i % 2 != 0) {
+                System.out.println(i);
             }
         }
+
     }
 }
