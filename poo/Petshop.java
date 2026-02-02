@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 // Classe que representa um Pet (animal que vai tomar banho)
 class Pet {
 
@@ -35,13 +37,13 @@ class Pet {
 class Maquina {
 
     // Indica se a máquina está limpa ou suja
-    private boolean limpo;
+    private boolean limpo = true;
 
     // Quantidade de água disponível na máquina
-    private int agua;
+    private int agua = 30;
 
     // Quantidade de shampoo disponível na máquina
-    private int shampoo;
+    private int shampoo = 10;
 
     // Referência ao pet que está dentro da máquina no momento
     private Pet pet;
@@ -131,23 +133,53 @@ class Maquina {
 
     // Método para retirar o pet da máquina
     public void removePet() {
-
-        // Se não tiver pet dentro, não faz sentido remover
-        if (!hasPet()) {
-            System.out.println("Não tem pet na maquina para remover!");
-            return;
-        }
+        this.limpo = this.pet.isLimpo();
 
         // Remove o pet (define como null = vazio)
         this.pet = null;
+        System.out.println("O pet" + this.pet.getNome() + "está limpo!");
+        this.pet = null;
+    }
+
+    public void banho(){
+        this.agua -= 10;
+        this.shampoo -= 2;
+        this.limpo = true;
+        System.out.println("A maquina está limpa");
     }
 }
 
 // Classe principal do programa
 public class Petshop {
-
+    private final static Scanner scanner = new Scanner(System.in);
+    private final static Maquina Maquina = new Maquina();
     // Método principal: é aqui que o programa começa a rodar
     public static void main(String[] args) {
-        
+        var opcao = -1;
+        do{
+            System.out.println("=== escolha uma das opcões ===");
+            System.out.println("1 - Dar banho no pet");
+            System.out.println("2 - Abastecer shampoo");
+            System.out.println("3 - Abastecer água");
+            System.out.println("4 - Verificar nivel da agua");
+            System.out.println("5 - Verificar se tem pet no banho");
+            System.out.println("6 - colocar pet na maquina");
+            System.out.println("7 - Retirar pet na maquina");
+            System.out.println("8 - limpar maquina");
+            System.out.println("0 - sair");
+            opcao = scanner.nextInt();
+            while (opcao !=0);
+
+            switch (opcao) {
+                case 7 -> setPetinMaquina();
+            }
+        }
+
+        public void setPetinMaquina(){
+            System.out.println("Informe o nome do seu pet");
+            var nome = scanner.next();
+            var pet = new pet(nome);
+            Maquina = new Maquina(pet)
+        }
     }
 }
